@@ -36,6 +36,7 @@ headers = {
 res = requests.get(url, headers=headers) #发送get请求
 html = res.text #获取响应内容
 ```
+
 2. 阅读响应内容，可以看到有视频的真实地址，以及各清晰度对应的代号，我们可以根据需要下载不同的清晰度，在这里我下载最高清晰度
 ![alt text](img/image-3.png)
 在此之前，我们要实现自动化，避免每次新的网址都要重新更改视频源地址，我们可以对响应内容进行过滤，自动选择出需要的视频地址
@@ -47,6 +48,7 @@ print(title) #打印出视频标题
 ```
 ![alt text](img/image-4.png)
 可以看到成功了
+
 3. 接着我们需要对`window.__playinfo__ `里的内容进行过滤
 ```python
 info = re.findall('window.__playinfo__=(.*?)</script>', html)[0] #获取第一个找到的window.__playinfo__内容
@@ -61,6 +63,7 @@ print(audio_url)
 ![alt text](img/image-5.png)
 ![alt text](img/image-6.png)
 可以看到获取url成功了，接下来我们需要下载视频和音频
+
 4. 下载视频和音频
 ```python
 video_res = requests.get(video_url, headers=headers) #发送get请求,获取视频内容
@@ -71,6 +74,7 @@ with open(title+'_.mp3', 'wb') as f:
     f.write(audio_res.content)
 ```
 这样就能下载到最高清晰度的视频和音频了，并且可以直接观看
+
 5. 合并视频和音频
 ```python
 def craft(title,name):
