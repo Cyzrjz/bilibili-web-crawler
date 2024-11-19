@@ -3,13 +3,13 @@ import re
 import json
 import os
 
-def craft(title,name):
+def craft(title,name): #合并音视频
     cmd = fr"ffmpeg -i {title}.mp4 -i {title}.mp3 -c copy -map 0:v:0 -map 1:a:0 {name}.mp4"
     os.system(cmd)
     os.remove(f"{title}.mp4")
     os.remove(f"{title}.mp3")
 
-def get_video(title,html,headers):
+def get_video(title,html,headers): #获取视频
     info_getvideo = re.findall('window.__playinfo__=(.*?)</script>', html)[0]
     json_data_getvideo = json.loads(info_getvideo)
     video_url = json_data_getvideo['data']['dash']['video'][0]['baseUrl']
@@ -21,7 +21,7 @@ def get_video(title,html,headers):
     with open(title + '_.mp3', 'wb') as f:
         f.write(audio_res.content)
 
-def get_intro(html):
+def get_intro(html): #获取视频信息
     info_getintro = re.findall("window.__INITIAL_STATE__=(.*?);\(function", html)[0]
     json_data_getintro = json.loads(info_getintro)
     with open('info_getintro.json', 'w', encoding='utf-8') as f:
